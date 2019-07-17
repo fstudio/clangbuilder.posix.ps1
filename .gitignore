@@ -1,0 +1,5 @@
+mainline/
+mainline.out/
+release_*/
+llvmorg-*/
+llvmorg-*
