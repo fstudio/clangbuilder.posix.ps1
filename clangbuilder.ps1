@@ -122,13 +122,34 @@ New-Item -ItemType Directory "$sourcedir.out" -ErrorAction SilentlyContinue | Ou
 $AllowProjects = "clang;clang-tools-extra;compiler-rt;libcxx;libcxxabi;libunwind;lld;lldb"
 $AllowTargets = "X86;AArch64;ARM;BPF"
 
-$CMakeArgs = "-GNinja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=OFF" +
-"-DLLVM_TARGETS_TO_BUILD=`"$AllowTargets`" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=`"RISCV;WebAssembly`" " + 
-"-DLLVM_ENABLE_PROJECTS=`"$AllowProjects`" " +
-"-DCMAKE_C_COMPILER=`"$CC`" -DCMAKE_CXX_COMPILER=`"$CXX`" " +
-"-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON " +
-"-DLLVM_HOST_TRIPLE=`"x86_64-fbi-linux-gnu`" -DCMAKE_INSTALL_PREFIX=`"$Prefix`" " +
-"-DCLANG_REPOSITORY_STRING=`"clangbuilder.io`" `"$SrcDir/llvm`""
+$CMakeArgv = @(
+    "-GNinja",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DLLVM_ENABLE_ASSERTIONS=OFF",
+    "-DLLVM_TARGETS_TO_BUILD=`"$AllowTargets`"",
+    "-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=`"RISCV;WebAssembly`"",
+    "-DLLVM_ENABLE_PROJECTS=`"$AllowProjects`"",
+    "-DCMAKE_C_COMPILER=`"$CC`"",
+    "-DCMAKE_CXX_COMPILER=`"$CXX`"",
+    "-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON",
+    "-DLLVM_HOST_TRIPLE=`"x86_64-fbi-linux-gnu`"",
+    "-DCMAKE_INSTALL_PREFIX=`"$Prefix`"",
+    "-DCLANG_REPOSITORY_STRING=`"clangbuilder.io`"",
+    "`"$SrcDir/llvm`""
+    # enable argv table
+)
+
+[System.Text.StringBuilder]$CMakeArgsBuilder = New-Object -TypeName System.Text.StringBuilder
+foreach ($s in $CMakeArgv) {
+    if ($CMakeArgsBuilder.Length -ne 0) {
+        $CMakeArgsBuilder.Append(" ")
+    }
+    $CMakeArgsBuilder.Append($s)
+}
+
+$CMakeArgs = $CMakeArgsBuilder.ToString()
+
+Write-Host -ForegroundColor Gray "cmake $CMakeArgs"
 
 $ex = Exec -FilePath "cmake" -Argv "$CMakeArgs" -WD "$OutDir"
 if ($ex -ne 0) {
