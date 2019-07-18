@@ -131,6 +131,7 @@ $CMakeArgv = @(
     "-DLLVM_ENABLE_PROJECTS=`"$AllowProjects`"",
     "-DCMAKE_C_COMPILER=`"$CC`"",
     "-DCMAKE_CXX_COMPILER=`"$CXX`"",
+    "-DCLANG_DEFAULT_LINKER=lld",
     "-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON",
     "-DLLVM_HOST_TRIPLE=`"x86_64-fbi-linux-gnu`"",
     "-DCMAKE_INSTALL_PREFIX=`"$Prefix`"",
