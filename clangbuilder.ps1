@@ -150,9 +150,9 @@ $CMakeArgv = @(
 [System.Text.StringBuilder]$CMakeArgsBuilder = New-Object -TypeName System.Text.StringBuilder
 foreach ($s in $CMakeArgv) {
     if ($CMakeArgsBuilder.Length -ne 0) {
-        $CMakeArgsBuilder.Append(" ")
+        [void]$CMakeArgsBuilder.Append(" ")
     }
-    $CMakeArgsBuilder.Append($s)
+    [void]$CMakeArgsBuilder.Append($s)
 }
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
