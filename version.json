@@ -1,6 +1,6 @@
 {
-    "Mainline": "9.0",
-    "Stable": "release/8.x",
+    "Mainline": "10.0",
+    "Stable": "release/9.x",
     "Release": "8.0.1-rc4",
     "ReleaseUrl": "https://github.com/llvm/llvm-project/archive/llvmorg-8.0.1-rc4.tar.gz"
 }

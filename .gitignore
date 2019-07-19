@@ -4,3 +4,4 @@ release_*/
 llvmorg-*/
 llvmorg-*
 *.out
+bwd/

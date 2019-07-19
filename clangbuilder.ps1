@@ -34,11 +34,13 @@ Function Exec {
     return $Process.ExitCode
 }
 
+
 Function CloneFetchBranch {
     param(
         [string]$Branch,
         [string]$OutDir
     )
+    $OutDir = Join-Path $PWD $OutDir
     $cloneargs = "clone https://github.com/llvm/llvm-project.git --branch `"$Branch`" --single-branch --depth=1 `"$OutDir`""
     if (Test-Path $OutDir) {
         $ex = Exec -FilePath "git" -Argv "checkout ." -WD "$OutDir"
@@ -48,12 +50,17 @@ Function CloneFetchBranch {
         $ex = Exec -FilePath "git" -Argv "pull" -WD "$OutDir"
         return $ex
     }
-    return  Exec -FilePath "git" -Argv "$cloneargs" -WD "$PSScriptRoot"
+    return  Exec -FilePath "git" -Argv "$cloneargs" 
 }
 
 
 # https://github.com/llvm/llvm-project.git
-Set-Location $PSScriptRoot
+$BWD = Join-Path -Path $PSScriptRoot "bwd"
+if (!(Test-Path $BWD)) {
+    New-Item -ItemType Directory -Path $BWD | Out-Null
+}
+Set-Location $BWD
+
 
 $obj = Get-Content -Path "$PSScriptRoot/version.json" -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
 if ($null -eq $obj -or ($null -eq $obj.Stable)) {
