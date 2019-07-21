@@ -116,7 +116,7 @@ elseif ($Branch -eq "release") {
     $sourcedir = $releasedir
 }
 else {
-    $ex = CloneFetchBranch -Branch $stable -OutDir $sourcedir
+    $ex = CloneFetchBranch -Branch "master" -OutDir $sourcedir
     if ($ex -ne 0) {
         exit $ex
     }
