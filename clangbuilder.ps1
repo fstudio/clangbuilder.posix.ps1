@@ -157,7 +157,7 @@ foreach ($s in $CMakeArgv) {
 }
 
 if ($Libcxx) {
-    [void]$CMakeArgsBuilder.Append(" -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DLIBCXX_CXX_ABI=libcxxabi")
+    [void]$CMakeArgsBuilder.Append(" -DCLANG_DEFAULT_CXX_STDLIB=libc++")
 }
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
