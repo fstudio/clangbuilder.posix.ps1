@@ -5,7 +5,8 @@ param(
     [String]$Branch = "master",
     [String]$Prefix,
     [String]$CC = "clang",
-    [String]$CXX = "clang++"
+    [String]$CXX = "clang++",
+    [Switch]$Libcxx
 )
 
 Function Exec {
@@ -153,6 +154,11 @@ foreach ($s in $CMakeArgv) {
         [void]$CMakeArgsBuilder.Append(" ")
     }
     [void]$CMakeArgsBuilder.Append($s)
+}
+
+if ($Libcxx) {
+    [void]$CMakeArgsBuilder.Append("-DCLANG_DEFAULT_CXX_STDLIB=libc++ ")
+    [void]$CMakeArgsBuilder.Append("-DLIBCXX_CXX_ABI=libcxxabi ")
 }
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
