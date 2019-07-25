@@ -6,7 +6,8 @@ param(
     [String]$Prefix,
     [String]$CC = "clang",
     [String]$CXX = "clang++",
-    [Switch]$Libcxx
+    [Switch]$Libcxx,
+    [Switch]$Static
 )
 
 Function Exec {
@@ -158,6 +159,9 @@ foreach ($s in $CMakeArgv) {
 
 if ($Libcxx) {
     [void]$CMakeArgsBuilder.Append(" -DCLANG_DEFAULT_CXX_STDLIB=libc++")
+}
+if ($Static) {
+    [void]$CMakeArgsBuilder.Append(" -DLLVM_BUILD_STATIC=ON -DLLVM_ENABLE_PIC=OFF")
 }
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
