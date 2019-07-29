@@ -159,9 +159,8 @@ foreach ($s in $CMakeArgv) {
 
 if ($Libcxx) {
     [void]$CMakeArgsBuilder.Append(" -DCLANG_DEFAULT_CXX_STDLIB=libc++")
-}
-if ($Static) {
-    [void]$CMakeArgsBuilder.Append(" -DLLVM_BUILD_STATIC=ON -DLLVM_ENABLE_PIC=OFF")
+    # static link libc++
+    [void]$CMakeArgsBuilder.Append(" -DCMAKE_EXE_LINKER_FLAGS=`"-static-libstdc++ -static-libgcc -lpthread`" ")
 }
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
