@@ -6,10 +6,8 @@ param(
     [String]$Prefix,
     [String]$CC = "clang",
     [String]$CXX = "clang++",
-    [Switch]$Libcxx,
-    [Switch]$Static
+    [Switch]$Libcxx
 )
-
 Function Exec {
     param(
         [string]$FilePath,
@@ -159,9 +157,9 @@ foreach ($s in $CMakeArgv) {
 
 if ($Libcxx) {
     [void]$CMakeArgsBuilder.Append(" -DCLANG_DEFAULT_CXX_STDLIB=libc++")
-    # static link libc++
-    [void]$CMakeArgsBuilder.Append(" -DCMAKE_EXE_LINKER_FLAGS=`"-static-libstdc++ -static-libgcc -lpthread`" ")
 }
+# static link libstdc++ libc++ libgcc etc ...
+[void]$CMakeArgsBuilder.Append(" -DCMAKE_EXE_LINKER_FLAGS=`"-static-libstdc++ -static-libgcc -lpthread`" ")
 
 $CMakeArgs = $CMakeArgsBuilder.ToString()
 
